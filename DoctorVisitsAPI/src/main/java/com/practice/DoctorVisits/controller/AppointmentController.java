@@ -55,12 +55,38 @@ public class AppointmentController implements AppointmentControllerDocs {
     @Override
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<AppointmentEntity>> getAppointmentById(@PathVariable Long id) {
-        return null;
+        try {
+            AppointmentEntity appointment = appointmentService.getAppointmentById(id);
+            return ResponseEntity.ok(
+                    new ApiResponse<>(true, "Cita encontrada", appointment)
+            );
+        } catch (ApiException e) {
+            return ResponseEntity.status(e.getStatus()).body(
+                    new ApiResponse<>(false, e.getMessage(), null)
+            );
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(
+                    new ApiResponse<>(false, "Error inesperado: " + e.getMessage(), null)
+            );
+        }
     }
 
     @Override
     @GetMapping
     public ResponseEntity<ApiResponse<List<AppointmentEntity>>> getAllAppointments() {
-        return null;
+        try {
+            List<AppointmentEntity> appointments = appointmentService.getAllAppointments();
+            return ResponseEntity.ok(
+                    new ApiResponse<>(true, "Citas encontradas", appointments)
+            );
+        } catch (ApiException e) {
+            return ResponseEntity.status(e.getStatus()).body(
+                    new ApiResponse<>(false, e.getMessage(), null)
+            );
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(
+                    new ApiResponse<>(false, "Error inesperado: " + e.getMessage(), null)
+            );
+        }
     }
 }

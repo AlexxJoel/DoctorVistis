@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class AppointmentService {
@@ -72,4 +73,27 @@ public class AppointmentService {
     }
 
 
+    public List<AppointmentEntity> getAllAppointments() {
+        List<AppointmentEntity> appointments = appointmentRepository.getAll();
+        if (appointments.isEmpty()) {
+            logger.warn("No appointments found");
+            throw new ApiException(
+                    "No appointments found",
+                    HttpStatus.NOT_FOUND
+            );
+        }
+        return appointments;
+    }
+
+    public AppointmentEntity getAppointmentById(Long id) {
+        AppointmentEntity appointment = appointmentRepository.findById(id);
+        if (appointment == null) {
+            logger.error("Appointment with id {} not found", id);
+            throw new ApiException(
+                    "Appointment with id " + id + " not found",
+                    HttpStatus.NOT_FOUND
+            );
+        }
+        return appointment;
+    }
 }

@@ -33,5 +33,8 @@ public interface DoctorRepositoryIbatis {
 
     @Select("SELECT * FROM DOCTORS")
     List<DoctorEntity> getAllDoctors();
+
+    @Select("SELECT CASE WHEN COUNT(*) > 0 THEN 1 ELSE 0 END FROM DOCTORS WHERE ID = #{doctorId}")
+    boolean existsById(Long doctorId);
 }
 
