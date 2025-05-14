@@ -1,0 +1,55 @@
+-- Tabla de MÉDICOS
+CREATE TABLE DOCTORS
+(
+    ID        NUMBER PRIMARY KEY,
+    NAME      VARCHAR2(100) NOT NULL,
+    SPECIALTY VARCHAR2(100) NOT NULL
+);
+
+-- Secuencia
+CREATE SEQUENCE doctors_seq
+    START WITH 1
+    INCREMENT BY 1
+    NOCACHE
+    NOCYCLE;
+
+
+
+CREATE TABLE PATIENTS
+(
+    ID              NUMBER PRIMARY KEY,
+    NAME            VARCHAR2(100) NOT NULL,
+    AGE             NUMBER        NOT NULL,
+    MEDICAL_HISTORY CLOB
+);
+
+-- Secuencia para ID
+CREATE SEQUENCE patients_seq
+    START WITH 1
+    INCREMENT BY 1
+    NOCACHE
+    NOCYCLE;
+
+
+
+-- Tabla de CITAS MÉDICAS
+-- Tabla de CITAS MÉDICAS
+CREATE TABLE APPOINTMENTS
+(
+    ID         NUMBER PRIMARY KEY,
+    APP_DATE DATE        NOT NULL,
+    APP_TIME VARCHAR2(10) NOT NULL,
+    DOCTOR_ID  NUMBER      NOT NULL,
+    PATIENT_ID NUMBER      NOT NULL,
+    CONSTRAINT FK_DOCTOR FOREIGN KEY (DOCTOR_ID) REFERENCES DOCTORS (ID),
+    CONSTRAINT FK_PATIENT FOREIGN KEY (PATIENT_ID) REFERENCES PATIENTS (ID)
+);
+
+-- Secuencia para las citas
+CREATE SEQUENCE appointments_seq
+    START WITH 1
+    INCREMENT BY 1
+    NOCACHE
+    NOCYCLE;
+
+-- CLOB is used for large text fields like medical history, diagnosis, and treatment notes.
