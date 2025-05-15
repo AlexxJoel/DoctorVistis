@@ -1,15 +1,14 @@
 import {Routes} from '@angular/router';
-import {DoctorListComponent} from "./doctors/doctor-list/doctor-list.component";
 import {PatientListComponent} from "./patients/patient-list/patient-list.component";
 import {AppointmentListComponent} from "./appointments/appointment-list/appointment-list.component";
 import {AppointmentFormComponent} from "./appointments/appointment-form/appointment-form.component";
-import {DoctorsPatientsComponent} from "./register-doctors-patients/doctors-patients.component";
+import {DoctorCrudComponent} from "./doctors/doctor-crud.component";
 
 const routesDoctors: Routes = [
     {
         path: 'doctors',
-        component: DoctorListComponent,
-        title: 'Doctor List',
+        component: DoctorCrudComponent,
+        title: 'Doctor',
     },
 ]
 
@@ -45,7 +44,6 @@ const routesHistoryAppointments: Routes = [
 
 
 export const routes: Routes = [
-    { path: 'register-doctor-patient', component: DoctorsPatientsComponent, title: 'Register Doctor/Patient' },
     ...routesDoctors,
     ...routesPatients,
     ...routesAppointments,

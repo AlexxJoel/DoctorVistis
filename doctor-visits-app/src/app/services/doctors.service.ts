@@ -24,8 +24,23 @@ export class DoctorsService {
     }
 
     register(doctor: DoctorReq): Observable<Doctor> {
-        const response: Observable<ResponseApiDoctorVisits<Doctor>> = this.http.post<ResponseApiDoctorVisits<Doctor>>(`${environment.apiUrl}/doctors`, doctor);
+        const endpoint = `${environment.apiUrl}/doctors`;
+        const response: Observable<ResponseApiDoctorVisits<Doctor>> =
+            this.http.post<ResponseApiDoctorVisits<Doctor>>(endpoint, doctor);
         return response.pipe(
+            map((response) => {
+                if (response.success) {
+                    return response.data;
+                } else {
+                    throw new Error(response.message);
+                }
+            })
+        );
+    }
+
+    getAll(): Observable<Doctor[]> {
+        const endpoint = `${environment.apiUrl}/doctors`;
+        return this.http.get<ResponseApiDoctorVisits<Doctor[]>>(endpoint).pipe(
             map((response) => {
                 if (response.success) {
                     return response.data;

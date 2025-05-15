@@ -4,15 +4,19 @@ import com.practice.DoctorVisits.model.entities.DoctorEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.lang.NonNull;
 
+import javax.validation.constraints.NotBlank;
+
 @Schema(description = "DTO for creating a new doctor")
 public class CreateDoctorReqDto {
 
     @Schema(description = "Nombre del médico", example = "Carlos")
     @NonNull
+    @NotBlank
     private String name;
 
     @Schema(description = "Especialidad del médico", example = "Cardiología")
     @NonNull
+    @NotBlank
     private String specialty;
 
     public CreateDoctorReqDto(@NonNull String name, @NonNull String specialty) {
