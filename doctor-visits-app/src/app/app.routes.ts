@@ -1,8 +1,8 @@
 import {Routes} from '@angular/router';
-import {PatientListComponent} from "./patients/patient-list/patient-list.component";
-import {AppointmentListComponent} from "./appointments/appointment-list/appointment-list.component";
-import {AppointmentFormComponent} from "./appointments/appointment-form/appointment-form.component";
 import {DoctorCrudComponent} from "./doctors/doctor-crud.component";
+import {PatientCrudComponent} from "./patients/patient-crud.component";
+import {AppointmentCrudComponent} from "./appointments/appointment-crud.component";
+import {HistoryListComponent} from "./history/history-list/history-list.component";
 
 const routesDoctors: Routes = [
     {
@@ -15,32 +15,27 @@ const routesDoctors: Routes = [
 const routesPatients: Routes = [
     {
         path: 'patients',
-        component: PatientListComponent,
-        title: 'Patient List',
+        component: PatientCrudComponent,
+        title: 'Patient ',
     },
 ]
 
 const routesAppointments: Routes = [
     {
         path: 'appointments',
-        component: AppointmentListComponent,
+        component: AppointmentCrudComponent,
         title: 'Appointment List',
     },
-    {
-        path: 'appointment/register',
-        component: AppointmentFormComponent,
-        title: 'Register Appointment',
-    }
+
 ]
 
 const routesHistoryAppointments: Routes = [
     {
         path: 'history',
-        component: AppointmentListComponent,
+        component: HistoryListComponent,
         title: 'History',
     }
 ]
-
 
 
 export const routes: Routes = [
@@ -48,6 +43,6 @@ export const routes: Routes = [
     ...routesPatients,
     ...routesAppointments,
     ...routesHistoryAppointments,
-    { path: '', redirectTo: 'appointments', pathMatch: 'full' },
-    { path: '**', redirectTo: 'appointments' }
+    {path: '', redirectTo: 'appointments', pathMatch: 'full'},
+    {path: '**', redirectTo: 'appointments'}
 ];

@@ -1,5 +1,6 @@
 <!-- Alerta de éxito o error -->
-<div *ngIf="response" class="alert mt-3" [ngClass]="{'alert-success': response.success, 'alert-danger': !response.success}" role="alert">
+<div *ngIf="response" class="alert mt-3"
+     [ngClass]="{'alert-success': response.success, 'alert-danger': !response.success}" role="alert">
     {{ response.message }}
 </div>
 
@@ -15,15 +16,19 @@
                     <form [formGroup]="formDoctor" (ngSubmit)="onSubmit()" autocomplete="off">
                         <div class="mb-3">
                             <label for="name" class="form-label">Nombre</label>
-                            <input id="name" class="form-control" formControlName="name" placeholder="Ej. Dr. Juan Pérez">
-                            <div *ngIf="formDoctor.get('name')?.invalid && formDoctor.get('name')?.touched" class="text-danger small">
+                            <input id="name" class="form-control" formControlName="name"
+                                   placeholder="Ej. Dr. Juan Pérez">
+                            <div *ngIf="formDoctor.get('name')?.invalid && formDoctor.get('name')?.touched"
+                                 class="text-danger small">
                                 El nombre es obligatorio.
                             </div>
                         </div>
                         <div class="mb-3">
                             <label for="specialty" class="form-label">Especialidad</label>
-                            <input id="specialty" class="form-control" formControlName="specialty" placeholder="Ej. Pediatría">
-                            <div *ngIf="formDoctor.get('specialty')?.invalid && formDoctor.get('specialty')?.touched" class="text-danger small">
+                            <input id="specialty" class="form-control" formControlName="specialty"
+                                   placeholder="Ej. Pediatría">
+                            <div *ngIf="formDoctor.get('specialty')?.invalid && formDoctor.get('specialty')?.touched"
+                                 class="text-danger small">
                                 La especialidad es obligatoria.
                             </div>
                         </div>

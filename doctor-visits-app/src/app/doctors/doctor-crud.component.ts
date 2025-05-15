@@ -12,7 +12,6 @@ import {CommonModule} from "@angular/common";
 })
 export class DoctorCrudComponent {
     formDoctor: FormGroup;
-    formPatient: FormGroup;
     response: { success: boolean; message: string; } | null = null;
     doctors: Doctor[] = [];
 
@@ -23,12 +22,6 @@ export class DoctorCrudComponent {
         this.formDoctor = this.fb.group({
             name: [''],
             specialty: [''],
-        });
-
-        this.formPatient = this.fb.group({
-            name: [''],
-            age: [''],
-            medicalHistory: [''],
         });
     }
 
