@@ -1,0 +1,72 @@
+<!-- Alerta de éxito o error -->
+<div *ngIf="response" class="alert mt-3" [ngClass]="{'alert-success': response.success, 'alert-danger': !response.success}" role="alert">
+    {{ response.message }}
+</div>
+
+<div class="container py-4">
+    <div class="row g-4">
+        <!-- Formulario Doctor -->
+        <div class="col-12 col-md-5">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-primary text-white fw-bold fs-5">
+                    Registrar Doctor
+                </div>
+                <div class="card-body">
+                    <form [formGroup]="formDoctor" (ngSubmit)="onSubmit()" autocomplete="off">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Nombre</label>
+                            <input id="name" class="form-control" formControlName="name" placeholder="Ej. Dr. Juan Pérez">
+                            <div *ngIf="formDoctor.get('name')?.invalid && formDoctor.get('name')?.touched" class="text-danger small">
+                                El nombre es obligatorio.
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="specialty" class="form-label">Especialidad</label>
+                            <input id="specialty" class="form-control" formControlName="specialty" placeholder="Ej. Pediatría">
+                            <div *ngIf="formDoctor.get('specialty')?.invalid && formDoctor.get('specialty')?.touched" class="text-danger small">
+                                La especialidad es obligatoria.
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-success w-100" [disabled]="formDoctor.invalid">
+                            <i class="bi bi-person-plus"></i> Registrar
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- Lista de Doctores -->
+        <div class="col-12 col-md-7">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-info text-white fw-bold fs-5">
+                    Lista de Doctores
+                </div>
+                <div class="card-body p-0">
+                    @if (doctors.length > 0) {
+                        <div class="table-responsive">
+                            <table class="table table-hover table-bordered mb-0 align-middle">
+                                <thead class="table-light">
+                                <tr>
+                                    <th class="text-center" style="width: 60px;">#</th>
+                                    <th>Nombre</th>
+                                    <th>Especialidad</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    @for (doctor of doctors; track doctor.id; let i = $index) {
+                                        <tr>
+                                            <td class="text-center">{{ i + 1 }}</td>
+                                            <td>{{ doctor.name }}</td>
+                                            <td>{{ doctor.specialty }}</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    } @else {
+                        <div class="p-4 text-center text-muted">No hay doctores registrados aún.</div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
