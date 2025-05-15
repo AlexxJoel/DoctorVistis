@@ -52,4 +52,17 @@ export class PatientsService {
             })
         );
     }
+
+    getById(id: number): Observable<Patient | null> {
+        const endpoint = `${environment.apiUrl}/patient/${id}`;
+        return this.http.get<ResponseApiDoctorVisits<Patient>>(endpoint).pipe(
+            map((response) => {
+                if (response.success) {
+                    return response.data;
+                } else {
+                    return null
+                }
+            })
+        );
+    }
 }

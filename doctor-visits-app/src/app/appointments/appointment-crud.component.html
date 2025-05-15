@@ -1,1 +1,90 @@
-<p>appointment-crud works!</p>
+<div class="container py-4">
+    <h2 class="mb-4">Agendar Cita Médica</h2>
+
+    <!-- Alerta de respuesta -->
+    <div *ngIf="response" class="alert" [ngClass]="{
+        'alert-success': response.success,
+        'alert-danger': !response.success
+      }">
+        {{ response.message }}
+    </div>
+
+    <div class="row g-4">
+        <!-- Formulario -->
+        <div class="col-12 col-lg-5">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">Nueva Cita</h5>
+                    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+                        <div class="mb-3">
+                            <label for="date" class="form-label">Fecha</label>
+                            <input type="date" id="date" class="form-control" formControlName="date">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="hour" class="form-label">Hora</label>
+                            <input type="time" id="hour" class="form-control" formControlName="hour">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="doctor" class="form-label">Médico</label>
+                            <select id="doctor" class="form-select" formControlName="doctorId">
+                                <option value="">Seleccione un médico</option>
+                                <option *ngFor="let d of doctors" [value]="d.id">
+                                    {{ d.name }} - {{ d.specialty }}
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="patient" class="form-label">Paciente</label>
+                            <select id="patient" class="form-select" formControlName="patientId">
+                                <option value="">Seleccione un paciente</option>
+                                <option *ngFor="let p of patients" [value]="p.id">{{ p.name }}</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100">
+                            Registrar Cita
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lista de Citas -->
+        <div class="col-12 col-lg-7">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">Lista de Citas</h5>
+                    <div *ngIf="appointments.length > 0; else emptyList">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-bordered align-middle">
+                                <thead class="table-light">
+                                <tr>
+                                    <th scope="col">Fecha</th>
+                                    <th scope="col">Hora</th>
+                                    <th scope="col">Médico</th>
+                                    <th scope="col">Paciente</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr *ngFor="let a of appointments">
+                                    <td>{{ a.date | date: 'dd/MM/yyyy' }}</td>
+                                    <td>{{ a.hour }}</td>
+                                    <td>{{ a.doctor?.name }}</td>
+                                    <td>{{ a.patient?.name }}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <ng-template #emptyList>
+                        <p class="text-muted">No hay citas registradas.</p>
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
