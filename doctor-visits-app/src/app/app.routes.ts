@@ -2,7 +2,7 @@ import {Routes} from '@angular/router';
 import {DoctorCrudComponent} from "./doctors/doctor-crud.component";
 import {PatientCrudComponent} from "./patients/patient-crud.component";
 import {AppointmentCrudComponent} from "./appointments/appointment-crud.component";
-import {HistoryListComponent} from "./history/history-list/history-list.component";
+import {AppointmentHistoryCrudComponent} from "./appointments-history/appointment-history-crud.component";
 
 const routesDoctors: Routes = [
     {
@@ -32,7 +32,7 @@ const routesAppointments: Routes = [
 const routesHistoryAppointments: Routes = [
     {
         path: 'history',
-        component: HistoryListComponent,
+        component: AppointmentHistoryCrudComponent,
         title: 'History',
     }
 ]

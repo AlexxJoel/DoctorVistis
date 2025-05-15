@@ -4,19 +4,15 @@ package com.practice.DoctorVisits.model.entities;
 public class HistoryAppointmentEntity {
     private Long id;
     private Long appointmentId;
-    private Long doctorId;
-    private Long patientId;
     private String diagnosis;
     private String prescription;
 
     public HistoryAppointmentEntity() {
     }
 
-    public HistoryAppointmentEntity(Long id, Long appointmentId, Long doctorId, Long patientId, String diagnosis, String prescription) {
+    public HistoryAppointmentEntity(Long id, Long appointmentId, String diagnosis, String prescription) {
         this.id = id;
         this.appointmentId = appointmentId;
-        this.doctorId = doctorId;
-        this.patientId = patientId;
         this.diagnosis = diagnosis;
         this.prescription = prescription;
     }
@@ -37,21 +33,7 @@ public class HistoryAppointmentEntity {
         this.appointmentId = appointmentId;
     }
 
-    public Long getDoctorId() {
-        return doctorId;
-    }
 
-    public void setDoctorId(Long doctorId) {
-        this.doctorId = doctorId;
-    }
-
-    public Long getPatientId() {
-        return patientId;
-    }
-
-    public void setPatientId(Long patientId) {
-        this.patientId = patientId;
-    }
 
     public String getDiagnosis() {
         return diagnosis;
@@ -68,4 +50,5 @@ public class HistoryAppointmentEntity {
     public void setPrescription(String prescription) {
         this.prescription = prescription;
     }
+
 }

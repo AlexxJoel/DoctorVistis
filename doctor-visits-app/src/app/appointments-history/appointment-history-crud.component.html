@@ -1,0 +1,161 @@
+<div class="py-4">
+    <h2 class="mb-4">Agendar y Atender Citas Médicas</h2>
+
+    <!-- Alerta de respuesta -->
+    <div *ngIf="response" class="alert" [ngClass]="{
+    'alert-success': response.success,
+    'alert-danger': !response.success
+  }">
+        {{ response.message }}
+    </div>
+
+    <div class="row row-cols-1 row-cols-lg-2 g-4">
+        <!-- Lista de Citas -->
+        <div class="col">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">Citas Programadas</h5>
+                    <div *ngIf="appointments.length > 0; else emptyAppointments">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-bordered align-middle">
+                                <thead class="table-light">
+                                <tr>
+                                    <th class="text-center" style="width: 60px;">#</th>
+                                    <th>Fecha</th>
+                                    <th>Hora</th>
+                                    <th>Doctor</th>
+                                    <th>Paciente</th>
+                                    <th class="text-center">Acciones</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr *ngFor="let a of appointments">
+                                    <td class="text-center">{{ a.id }}</td>
+                                    <td>{{ a.date | date: 'dd/MM/yyyy' }}</td>
+                                    <td>{{ a.hour }}</td>
+                                    <td>{{ a.doctor?.name }}</td>
+                                    <td>{{ a.patient?.name }}</td>
+                                    <td class="text-center">
+                                        <ng-container *ngIf="idAppointmentSelected !== a.id; else cancelBtn">
+                                            <button class="btn btn-outline-success btn-sm" (click)="attendAppointment(a.id)">
+                                                Atender
+                                            </button>
+                                        </ng-container>
+                                        <ng-template #cancelBtn>
+                                            <button class="btn btn-outline-danger btn-sm" (click)="idAppointmentSelected = 0">
+                                                Cancelar
+                                            </button>
+                                        </ng-template>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <ng-template #emptyAppointments>
+                        <p class="text-muted">No hay citas registradas.</p>
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+
+        <!-- Formulario para atender cita -->
+        <div class="col">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">Atender Cita</h5>
+                    <div *ngIf="idAppointmentSelected > 0" class="alert alert-info">
+                        Cita seleccionada (folio): <strong>{{ idAppointmentSelected }}</strong>
+                    </div>
+
+                    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+                        <div class="mb-3">
+                            <label for="diagnosis" class="form-label">Diagnóstico</label>
+                            <input id="diagnosis" type="text" class="form-control" formControlName="diagnosis">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="prescription" class="form-label">Receta</label>
+                            <input id="prescription" type="text" class="form-control" formControlName="prescription">
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100">
+                            Registrar Diagnóstico
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filtros de búsqueda -->
+    <div class="mt-5">
+        <h5 class="mb-3">Filtrar Citas</h5>
+
+        <div class="mb-3">
+            <div class="form-check form-check-inline">
+                <input type="radio" class="form-check-input" id="searchByPatient" name="searchBy" [(ngModel)]="searchBy" value="paciente">
+                <label class="form-check-label" for="searchByPatient">Por Paciente</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input type="radio" class="form-check-input" id="searchByDoctor" name="searchBy" [(ngModel)]="searchBy" value="doctor">
+                <label class="form-check-label" for="searchByDoctor">Por Doctor</label>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 col-md-6">
+                <ng-container *ngIf="searchBy === 'paciente'; else doctorSelect">
+                    <label for="patient" class="form-label">Paciente</label>
+                    <select id="patient" class="form-select" [(ngModel)]="selectedPatient" (change)="onPatientChange()">
+                        <option value="">Seleccione un paciente</option>
+                        <option *ngFor="let p of patients" [value]="p.id">{{ p.name }}  - {{ p.id }}</option>
+                    </select>
+                </ng-container>
+                <ng-template #doctorSelect>
+                    <label for="doctor" class="form-label">Doctor</label>
+                    <select id="doctor" class="form-select" >
+                        <option value="">Seleccione un doctor</option>
+                        <option *ngFor="let d of doctors" [value]="d.id">
+                            {{ d.name }} - {{ d.specialty }} - {{ d.id }}
+                        </option>
+                    </select>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+
+    <!-- Historial -->
+    <div class="card shadow-sm border-0 h-100 mt-5">
+        <div class="card-body">
+            <h5 class="card-title mb-3">Historial de Citas Atendidas</h5>
+
+            <div *ngIf="attendedAppointments.length > 0; else emptyHistory">
+                <div class="table-responsive">
+                    <table class="table table-hover table-bordered align-middle">
+                        <thead class="table-light">
+                        <tr>
+                            <th class="text-center" style="width: 60px;">#</th>
+                            <th class="text-center" style="width: 60px;">Folio</th>
+                            <th>Diagnóstico</th>
+                            <th>Receta</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let a of attendedAppointments, let i = index">
+                            <td class="text-center">{{  i + 1 }}</td>
+                            <td class="text-center">{{ a.appointmentId }}</td>
+                            <td>{{ a.diagnosis }}</td>
+                            <td>{{ a.prescription }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <ng-template #emptyHistory>
+                <p class="text-muted">No hay citas atendidas registradas.</p>
+            </ng-template>
+        </div>
+    </div>
+</div>

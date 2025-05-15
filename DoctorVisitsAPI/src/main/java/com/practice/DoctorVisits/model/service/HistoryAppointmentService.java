@@ -31,30 +31,10 @@ public class HistoryAppointmentService {
 
     @Transactional
     public void saveHistoryAppointment(HistoryAppointmentEntity historyAppointment) {
-        Long doctorId = historyAppointment.getDoctorId();
-        Long patientId = historyAppointment.getPatientId();
         Long appointmentId = historyAppointment.getAppointmentId();
 
-        // Check if the doctor and patient exist
-        if (doctorRepository.existsById(doctorId)) {
-            logger.error("Doctor with id {} not found", doctorId);
-            throw new ApiException(
-                    "Doctor with id " + doctorId + " not found",
-                    HttpStatus.NOT_FOUND
-            );
-        }
-
-        // Check if the patient exists
-        if (patientRepository.existsById(patientId)) {
-            logger.error("Patient with id {} not found", patientId);
-            throw new ApiException(
-                    "Patient with id " + patientId + " not found",
-                    HttpStatus.NOT_FOUND
-            );
-        }
-
         // Check if the appointment exists
-        if (appointmentRepository.existsById(appointmentId)) {
+        if (!appointmentRepository.existsById(appointmentId)) {
             logger.error("Appointment with id {} not found", appointmentId);
             throw new ApiException(
                     "Appointment with id " + appointmentId + " not found",
@@ -95,4 +75,9 @@ public class HistoryAppointmentService {
     }
 
 
+    public List<HistoryAppointmentEntity> getAllHistoryAppointments() {
+        List<HistoryAppointmentEntity> history = historyAppointmentRepository.findAll();
+        logger.info("All history appointments retrieved successfully: {}", history);
+        return history;
+    }
 }
