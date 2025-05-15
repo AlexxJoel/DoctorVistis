@@ -1,8 +1,9 @@
 package com.practice.DoctorVisits.controller.dtos;
 
-import com.practice.DoctorVisits.model.entities.DoctorEntity;
+import com.practice.DoctorVisits.core.ApiException;
 import com.practice.DoctorVisits.model.entities.PatientEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
+import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
 
 @Schema(description = "DTO for creating a new patient")
@@ -63,5 +64,18 @@ public class CreatePatientReqDto {
     private void sanitize() {
         this.name = this.name.trim();
         this.medicalHistory = this.medicalHistory.trim();
+    }
+
+    public void validate() {
+        this.sanitize();
+        if (this.name.isEmpty()) {
+            throw new ApiException("Name cannot be null or empty", HttpStatus.BAD_REQUEST);
+        }
+        if (this.age <= 0) {
+            throw new ApiException("Age must be a positive integer", HttpStatus.BAD_REQUEST);
+        }
+        if (this.medicalHistory.isEmpty()) {
+            throw new ApiException("Medical history cannot be null or empty", HttpStatus.BAD_REQUEST);
+        }
     }
 }

@@ -30,9 +30,10 @@ public class DoctorController implements DoctorControllerDocs {
     @Override
     @PostMapping
     public ResponseEntity<ApiResponse<DoctorEntity>> registerDoctor(
-            @RequestBody @Valid CreateDoctorReqDto doctorReqDto
+           @Valid @RequestBody  CreateDoctorReqDto doctorReqDto
     ) {
         try {
+            doctorReqDto.validate();
             DoctorEntity doctor = doctorService.registerDoctor(doctorReqDto.toEntity());
             return ResponseEntity.status(HttpStatus.CREATED).body(
                     new ApiResponse<>(true, "Médico registrado correctamente", doctor)

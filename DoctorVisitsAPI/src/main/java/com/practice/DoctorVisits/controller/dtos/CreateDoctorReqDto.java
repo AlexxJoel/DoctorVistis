@@ -1,7 +1,9 @@
 package com.practice.DoctorVisits.controller.dtos;
 
+import com.practice.DoctorVisits.core.ApiException;
 import com.practice.DoctorVisits.model.entities.DoctorEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
+import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
 
 import javax.validation.constraints.NotBlank;
@@ -53,5 +55,15 @@ public class CreateDoctorReqDto {
     private void sanitize() {
         this.name = this.name.trim();
         this.specialty = this.specialty.trim();
+    }
+
+    public void validate() {
+        this.sanitize();
+        if (this.name.isEmpty()) {
+            throw new ApiException("Name cannot be null or empty", HttpStatus.BAD_REQUEST);
+        }
+        if (this.specialty.isEmpty()) {
+            throw new ApiException("Specialty cannot be null or empty", HttpStatus.BAD_REQUEST);
+        }
     }
 }

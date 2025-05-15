@@ -31,12 +31,7 @@ public class AppointmentController implements AppointmentControllerDocs {
     public ResponseEntity<ApiResponse<AppointmentEntity>> scheduleAppointment(
             @Validated @RequestBody CreateAppointmentReqDto appointmentReqDto) {
         try {
-            if (!appointmentReqDto.isValidAppointmentDateTime()) {
-                throw new ApiException(
-                        "The appointment date and time is not valid - date format is YYYY-MM-DDTHH:MM",
-                        HttpStatus.BAD_REQUEST);
-            }
-
+            appointmentReqDto.validate();
             AppointmentEntity appointment = appointmentService.scheduleAppointment(appointmentReqDto.toEntity());
             return ResponseEntity.ok(
                     new ApiResponse<>(true, "Cita programada correctamente", appointment)

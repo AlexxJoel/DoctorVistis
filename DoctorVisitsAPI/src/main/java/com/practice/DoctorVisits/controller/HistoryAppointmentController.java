@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -31,8 +32,9 @@ public class HistoryAppointmentController implements HistoryAppointmentControlle
 
     @Override
     @PostMapping
-    public ResponseEntity<ApiResponse<Void>> saveHistoryAppointment(@RequestBody @Validated CreateHistoryAppointmentReqDto historyAppointment) {
+    public ResponseEntity<ApiResponse<Void>> saveHistoryAppointment(@Valid @RequestBody  CreateHistoryAppointmentReqDto historyAppointment) {
         try {
+            historyAppointment.validate();
              historyAppointmentService.saveHistoryAppointment(historyAppointment.toEntity());
             return ResponseEntity.ok(new ApiResponse<>(true, "History appointment saved successfully"));
         }catch (ApiException e){

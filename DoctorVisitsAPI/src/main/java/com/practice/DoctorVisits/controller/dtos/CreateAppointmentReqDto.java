@@ -1,8 +1,10 @@
 package com.practice.DoctorVisits.controller.dtos;
 
+import com.practice.DoctorVisits.core.ApiException;
 import com.practice.DoctorVisits.model.entities.AppointmentEntity;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.media.Schema;
+import org.springframework.http.HttpStatus;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
@@ -84,6 +86,16 @@ public class CreateAppointmentReqDto {
     public boolean isValidAppointmentDateTime() {
         String REGEX = "^(\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2})$";
         return this.appointmentDateTime.matches(REGEX);
+    }
+
+    public void validate() {
+        this.sanitize();
+        if (this.appointmentDateTime.isEmpty()) {
+            throw new ApiException("Appointment date and time cannot be null or empty", HttpStatus.BAD_REQUEST);
+        }
+        if (!isValidAppointmentDateTime()) {
+            throw new ApiException("Invalid appointment date and time format. Expected format: YYYY-MM-DDTHH:MM", HttpStatus.BAD_REQUEST);
+        }
     }
 
 

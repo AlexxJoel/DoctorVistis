@@ -1,9 +1,11 @@
 package com.practice.DoctorVisits.controller.dtos;
 
+import com.practice.DoctorVisits.core.ApiException;
 import com.practice.DoctorVisits.model.entities.AppointmentEntity;
 import com.practice.DoctorVisits.model.entities.HistoryAppointmentEntity;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.media.Schema;
+import org.springframework.http.HttpStatus;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
@@ -64,4 +66,19 @@ public class CreateHistoryAppointmentReqDto {
         this.diagnosis = this.diagnosis.trim();
         this.treatment = this.treatment.trim();
     }
+
+    public void validate() {
+        this.sanitize();
+        if (this.appointmentId == null) {
+            throw new ApiException("Appointment ID cannot be null", HttpStatus.BAD_REQUEST);
+        }
+        if (this.diagnosis == null || this.diagnosis.isEmpty()) {
+            throw new ApiException("Diagnosis cannot be null or empty", HttpStatus.BAD_REQUEST);
+        }
+
+        if (this.treatment == null || this.treatment.isEmpty()) {
+            throw new ApiException("Treatment cannot be null or empty", HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }

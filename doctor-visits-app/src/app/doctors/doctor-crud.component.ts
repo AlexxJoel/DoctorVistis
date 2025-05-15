@@ -63,7 +63,7 @@ export class DoctorCrudComponent {
                 } else if (status === 400) {
                     this.response = {
                         success: false,
-                        message: 'Error! El doctor no se ha podido registrar'
+                        message: 'Error! El doctor no se ha podido registrar, por favor verifique los datos'
                     }
                 } else {
                     this.response = {
