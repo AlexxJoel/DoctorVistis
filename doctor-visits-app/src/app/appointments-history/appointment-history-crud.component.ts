@@ -28,6 +28,7 @@ export class AppointmentHistoryCrudComponent {
     searchBy: string = 'doctor';
     attendedAppointments: AppointmentHistory[] = [];
     selectedPatient: number = 0;
+    selectedDoctor: number = 0;
 
     constructor(
         private appointmentService: ApointmentsService, // Replace with actual service
@@ -45,6 +46,7 @@ export class AppointmentHistoryCrudComponent {
 
     ngOnInit() {
         this.getAllAppointments();
+        this.getAttendedAppointments();
         this.getAllDoctors();
         this.getAllPatients();
     }
@@ -126,4 +128,31 @@ export class AppointmentHistoryCrudComponent {
         });
     }
 
+    onPatientChange() {
+        console.log('Selected patient:', this.selectedPatient);
+        if (this.selectedPatient) {
+            this.appointmentHistoryService.getByPatientId(this.selectedPatient).subscribe({
+                next: (response) => {
+                    this.attendedAppointments = response.reverse();
+                },
+                error: (error) => {
+                    console.error('Error fetching attended appointments:', error);
+                }
+            });
+        }
+
+    }
+
+    onDoctorChange() {
+        if (this.selectedDoctor) {
+            this.appointmentHistoryService.getByDoctorId(this.selectedDoctor).subscribe({
+                next: (response) => {
+                    this.attendedAppointments = response.reverse();
+                },
+                error: (error) => {
+                    console.error('Error fetching attended appointments:', error);
+                }
+            });
+        }
+    }
 }

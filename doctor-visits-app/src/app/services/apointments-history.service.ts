@@ -53,5 +53,31 @@ export class ApointmentsHistoryService {
         );
     }
 
+    getByPatientId(patientId: number): Observable<AppointmentHistory[]> {
+        const url = `${environment.apiUrl}/history-appointments/patient/${patientId}`;
+        return this.http.get<ResponseApiDoctorVisits<AppointmentHistory[]>>(url).pipe(
+            map((response) => {
+                if (response.success) {
+                    return response.data;
+                } else {
+                    throw new Error(response.message);
+                }
+            })
+        );
+    }
+
+
+    getByDoctorId(doctorId: number): Observable<AppointmentHistory[]> {
+        const url = `${environment.apiUrl}/history-appointments/doctor/${doctorId}`;
+        return this.http.get<ResponseApiDoctorVisits<AppointmentHistory[]>>(url).pipe(
+            map((response) => {
+                if (response.success) {
+                    return response.data;
+                } else {
+                    throw new Error(response.message);
+                }
+            })
+        );
+    }
 
 }

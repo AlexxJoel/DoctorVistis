@@ -114,7 +114,7 @@
                 </ng-container>
                 <ng-template #doctorSelect>
                     <label for="doctor" class="form-label">Doctor</label>
-                    <select id="doctor" class="form-select" >
+                    <select id="doctor" class="form-select" [(ngModel)]="selectedDoctor" (change)="onDoctorChange()">
                         <option value="">Seleccione un doctor</option>
                         <option *ngFor="let d of doctors" [value]="d.id">
                             {{ d.name }} - {{ d.specialty }} - {{ d.id }}

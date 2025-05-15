@@ -47,7 +47,7 @@ public class HistoryAppointmentService {
     }
 
     public List<HistoryAppointmentEntity> getHistoryByPatientId(Long patientId) {
-        if (patientRepository.existsById(patientId)) {
+        if (!patientRepository.existsById(patientId)) {
             logger.error("Patient with id {} not found", patientId);
             throw new ApiException(
                     "Patient with id " + patientId + " not found",
@@ -61,7 +61,7 @@ public class HistoryAppointmentService {
     }
 
     public List<HistoryAppointmentEntity> getHistoryByDoctorId(Long doctorId) {
-        if (doctorRepository.existsById(doctorId)) {
+        if (!doctorRepository.existsById(doctorId)) {
             logger.error("Doctor with id {} not found", doctorId);
             throw new ApiException(
                     "Doctor with id " + doctorId + " not found",
