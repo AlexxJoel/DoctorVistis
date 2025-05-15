@@ -1,0 +1,83 @@
+<!-- Alerta de éxito o error -->
+<div *ngIf="response" class="alert mt-3"
+     [ngClass]="{ 'alert-success': response.success, 'alert-danger': !response.success }" role="alert">
+    {{ response.message }}
+</div>
+
+<div class="container py-4">
+    <div class="row g-4">
+        <!-- Formulario Paciente -->
+        <div class="col-12 col-md-5">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-success text-white fw-bold fs-5">
+                    Registrar Paciente
+                </div>
+                <div class="card-body">
+                    <form [formGroup]="form" (ngSubmit)="onSubmit()" autocomplete="off">
+                        <div class="mb-3">
+                            <label for="patientName" class="form-label">Nombre</label>
+                            <input id="patientName" class="form-control" formControlName="name" placeholder="Ej. Ana Rodríguez">
+                            <div *ngIf="form.get('name')?.invalid && form.get('name')?.touched"
+                                 class="text-danger small">
+                                El nombre es obligatorio.
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="patientAge" class="form-label">Edad</label>
+                            <input id="patientAge" type="number" class="form-control" formControlName="age" min="0">
+                            <div *ngIf="form.get('age')?.invalid && form.get('age')?.touched"
+                                 class="text-danger small">
+                                La edad es obligatoria.
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="history" class="form-label">Antecedentes Médicos</label>
+                            <textarea id="history" rows="3" class="form-control" formControlName="medicalHistory"
+                                      placeholder="Ej. Hipertensión, asma..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100" [disabled]="form.invalid">
+                            <i class="bi bi-person-plus"></i> Registrar Paciente
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lista de Pacientes -->
+        <div class="col-12 col-md-7">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-secondary text-white fw-bold fs-5">
+                    Lista de Pacientes
+                </div>
+                <div class="card-body p-0">
+                    @if (patients.length > 0) {
+                        <div class="table-responsive">
+                            <table class="table table-hover table-bordered mb-0 align-middle">
+                                <thead class="table-light">
+                                <tr>
+                                    <th class="text-center" style="width: 60px;">#</th>
+                                    <th>Nombre</th>
+                                    <th>Edad</th>
+                                    <th>Antecedentes</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    @for (patient of patients; track patient.id; let i = $index) {
+                                        <tr>
+                                            <td class="text-center">{{ i + 1 }}</td>
+                                            <td>{{ patient.name }}</td>
+                                            <td>{{ patient.age }}</td>
+                                            <td>{{ patient.medicalHistory }}</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    } @else {
+                        <div class="p-4 text-center text-muted">No hay pacientes registrados aún.</div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
